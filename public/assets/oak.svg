@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="og" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B4A34"/><stop offset=".5" stop-color="#493A28"/><stop offset="1" stop-color="#382C1E"/>
+    </linearGradient>
+    <filter id="grain" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.015" numOctaves="4" seed="14" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.15  0 0 0 0 0.11  0 0 0 0 0.07  0 0 0 .9 0"/>
+    </filter>
+    <filter id="grain2" x="-2%" y="-2%" width="104%" height="104%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.006" numOctaves="2" seed="21" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.78  0 0 0 0 0.66  0 0 0 0 0.48  0 0 0 -4 2.2"/>
+    </filter>
+    <linearGradient id="ol" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".14"/><stop offset=".5" stop-color="#ffffff" stop-opacity="0"/><stop offset="1" stop-color="#1a140c" stop-opacity=".32"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#og)"/>
+  <rect width="1200" height="800" filter="url(#grain)" opacity=".55"/>
+  <rect width="1200" height="800" filter="url(#grain2)" opacity=".22"/>
+  <g stroke="#2c2114" stroke-opacity=".35" stroke-width="2">
+    <line x1="300" y1="0" x2="300" y2="800"/><line x1="620" y1="0" x2="620" y2="800"/><line x1="900" y1="0" x2="900" y2="800"/>
+  </g>
+  <rect width="1200" height="800" fill="url(#ol)"/>
+</svg>

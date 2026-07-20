@@ -1,0 +1,92 @@
+@import "../styles/tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* next/font variables mapped onto the design-system font tokens.
+   tokens.css is the source of truth for the fallback stacks; here we
+   just inject the self-hosted next/font faces at the front. */
+:root {
+  --font-display: var(--font-sora), "Noto Sans Thai", "Sora", sans-serif;
+  --font-body: var(--font-inter), "IBM Plex Sans Thai", "Inter", sans-serif;
+  --font-thai-display: var(--font-noto-thai), sans-serif;
+  --font-thai-body: var(--font-plex-thai), sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--texx-bronze-light);
+}
+
+/* ---- Shared keyframes (ambient / hero) ---- */
+@keyframes texx-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes texx-heroZoom {
+  0% { transform: scale(1.08); }
+  100% { transform: scale(1.2); }
+}
+@keyframes texx-heroZoom-soft {
+  0% { transform: scale(1.04); }
+  100% { transform: scale(1.14); }
+}
+@keyframes texx-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+/* ---- Home interaction states (ported from DC style-hover) ---- */
+.texx-btn-primary:hover { background: #B99A6B; color: #F5F4EE; }
+.texx-btn-secondary:hover { background: #434634; border-color: #B99A6B; }
+.texx-btn-dark:hover { background: #B99A6B; color: #F5F4EE; }
+.texx-card { transition: transform 700ms var(--ease-out), box-shadow 700ms var(--ease-out); }
+.texx-card:hover { transform: translateY(-6px); box-shadow: 0 28px 55px -24px rgba(0, 0, 0, 0.6); }
+.texx-card-work { transition: transform 700ms var(--ease-out), box-shadow 700ms var(--ease-out); }
+.texx-card-work:hover { transform: translateY(-6px); box-shadow: 0 30px 60px -26px rgba(0, 0, 0, 0.6); }
+[data-marquee]:hover { animation-play-state: paused; }
+.texx-navbtn:hover { background: #B99A6B; border-color: #B99A6B; color: #26281E; }
+.texx-slide:hover { box-shadow: 0 28px 55px -24px rgba(0, 0, 0, 0.6); }
+.texx-service:hover { background: #2E3124; }
+
+/* ---- Contact form fields ---- */
+.texx-field:focus { border-bottom-color: #B99A6B; }
+.texx-field::placeholder { color: #7B7C6E; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEXX — Motion Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --olive-950:#1E2016;--olive-900:#26281E;--olive-800:#34372A;--olive-700:#434634;--olive-600:#565A45;
+    --cream:#EAE8DD;--cream-muted:#A9A99A;--cream-dim:#7B7C6E;--white:#F5F4EE;
+    --bronze:#B99A6B;--bronze-light:#D0B588;
+    --border:rgba(234,232,221,.12);--border-strong:rgba(234,232,221,.24);
+    --fd:'Sora','Noto Sans Thai',sans-serif;--fb:'Inter','Noto Sans Thai',sans-serif;
+    --eo:cubic-bezier(0.16,1,0.3,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--olive-800);color:var(--cream);font-family:var(--fb);line-height:1.7;overflow-x:hidden}
+  .eyebrow{font-size:.72rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--bronze)}
+  h1,h2,h3{font-family:var(--fd);color:var(--white);letter-spacing:-.015em;line-height:1.05}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem)}
+
+  /* progress bar */
+  #prog{position:fixed;top:0;left:0;height:3px;width:0;background:var(--bronze);z-index:50;transition:width .1s linear}
+
+  /* custom cursor */
+  #cur{position:fixed;top:0;left:0;width:12px;height:12px;border-radius:50%;background:var(--bronze);pointer-events:none;z-index:60;transform:translate(-50%,-50%);transition:width .3s var(--eo),height .3s var(--eo),background .3s}
+  @media(hover:none){#cur{display:none}}
+
+  /* ---- 1. HERO PARALLAX ---- */
+  .hero{position:relative;height:100vh;min-height:560px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .hero .layer{position:absolute;inset:-10% 0;will-change:transform}
+  .hero .bg{background:radial-gradient(120% 90% at 30% 20%,#4a4d3a,#1c1e15);animation:ken 22s var(--eo) infinite alternate}
+  .hero .mid{background:radial-gradient(60% 50% at 70% 80%,rgba(185,154,107,.28),transparent 60%)}
+  @keyframes ken{from{transform:scale(1.05)}to{transform:scale(1.18)}}
+  .hero .content{position:relative;text-align:center;z-index:2;padding:0 1.5rem}
+  .hero h1{font-size:clamp(2.75rem,8vw,6rem);font-weight:800;letter-spacing:-.02em}
+  .hero .eyebrow{display:block;margin-bottom:1.2rem}
+  .hero .sub{color:var(--cream-muted);margin-top:1.2rem;font-size:1.1rem}
+  .scrollhint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim);z-index:2}
+  .scrollhint span{display:block;width:1px;height:34px;background:var(--bronze);margin:.6rem auto 0;animation:pulse 2s var(--eo) infinite}
+  @keyframes pulse{0%,100%{transform:scaleY(.4);opacity:.4}50%{transform:scaleY(1);opacity:1}}
+
+  /* mask text reveal */
+  .mask{overflow:hidden;display:inline-block}
+  .mask>span{display:inline-block;transform:translateY(110%);transition:transform 1s var(--eo)}
+  .hero.in .mask>span{transform:none}
+  .hero .m2>span{transition-delay:.12s}
+
+  section{padding:clamp(5rem,12vh,9rem) 0;border-top:1px solid var(--border)}
+  .sec-head{margin-bottom:3rem}
+  .sec-head .eyebrow{display:block;margin-bottom:.9rem}
+  .sec-head h2{font-size:clamp(1.6rem,3.5vw,2.6rem);font-weight:600}
+  .note{color:var(--cream-dim);font-size:.9rem;margin-top:1.5rem}
+
+  /* reveal + stagger */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--eo),transform .9s var(--eo)}
+  .reveal.in{opacity:1;transform:none}
+  .stagger>*{opacity:0;transform:translateY(28px);transition:opacity .8s var(--eo),transform .8s var(--eo)}
+  .stagger.in>*{opacity:1;transform:none}
+  .stagger.in>*:nth-child(1){transition-delay:0s}
+  .stagger.in>*:nth-child(2){transition-delay:.1s}
+  .stagger.in>*:nth-child(3){transition-delay:.2s}
+
+  /* ---- parallax layered demo ---- */
+  .plx{position:relative;height:340px;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:var(--olive-950)}
+  .plx .p{position:absolute;will-change:transform}
+  .plx .p1{inset:0;background:radial-gradient(80% 120% at 20% 10%,#464a37,#1a1c13)}
+  .plx .p2{width:180px;height:180px;border-radius:50%;background:rgba(185,154,107,.25);top:30%;left:12%;filter:blur(2px)}
+  .plx .p3{width:120px;height:120px;border-radius:12px;background:var(--olive-600);top:40%;right:16%;border:1px solid var(--border-strong)}
+  .plx .cap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:700;font-size:2rem;color:var(--white);letter-spacing:.05em}
+
+  /* ---- micro-interaction lab ---- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+  .demo{background:var(--olive-700);border:1px solid var(--border);border-radius:14px;padding:1.6rem;text-align:center}
+  .demo .lbl{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:1.2rem}
+  .btn{font-family:var(--fd);font-weight:600;font-size:.95rem;padding:.8rem 1.6rem;border-radius:4px;border:1px solid transparent;cursor:pointer;transition:all .4s var(--eo);letter-spacing:.02em}
+  .btn:active{transform:scale(.96)}
+  .btn-p{background:var(--cream);color:var(--olive-900)}
+  .btn-p:hover{background:var(--bronze);color:var(--white)}
+  .btn-p .ar{display:inline-block;transition:transform .4s var(--eo)}
+  .btn-p:hover .ar{transform:translateX(5px)}
+  .link{position:relative;color:var(--cream);text-decoration:none;font-weight:500;padding-bottom:3px;font-family:var(--fb)}
+  .link::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1.5px;background:var(--bronze);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--eo)}
+  .link:hover::after{transform:scaleX(1)}
+  .mag{width:120px;height:120px;margin:0 auto;border-radius:50%;background:var(--olive-900);border:1px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-weight:700;color:var(--bronze);cursor:pointer;transition:transform .3s var(--eo)}
+  .field{position:relative;text-align:left;margin-top:.5rem}
+  .field input{width:100%;background:transparent;border:none;border-bottom:1px solid var(--border-strong);color:var(--cream);padding:1.2rem 0 .5rem;font-size:1rem;font-family:var(--fb);outline:none;transition:border-color .3s}
+  .field label{position:absolute;left:0;top:1.2rem;color:var(--cream-dim);pointer-events:none;transition:all .3s var(--eo)}
+  .field input:focus{border-color:var(--bronze)}
+  .field input:focus+label,.field input:not(:placeholder-shown)+label{top:0;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--bronze)}
+  .counter{font-family:var(--fd);font-weight:800;font-size:3rem;color:var(--white)}
+  .card{background:var(--olive-700);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform .7s var(--eo),box-shadow .7s var(--eo)}
+  .card:hover{transform:translateY(-8px);box-shadow:0 30px 60px -24px rgba(0,0,0,.55)}
+  .card .img{height:150px;overflow:hidden}
+  .card .img>div{width:100%;height:100%;background:linear-gradient(135deg,var(--olive-600),var(--olive-900));transition:transform .8s var(--eo)}
+  .card:hover .img>div{transform:scale(1.08)}
+  .card .b{padding:1.2rem 1.4rem}
+  .card .b p{color:var(--cream-muted);font-size:.9rem;margin-top:.3rem}
+
+  /* marquee */
+  .marq{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.6rem 0;white-space:nowrap}
+  .marq .track{display:inline-block;animation:scrollx 22s linear infinite;font-family:var(--fd);font-weight:700;font-size:1.6rem;color:var(--olive-600);letter-spacing:.1em}
+  .marq .track span{margin:0 1.5rem}
+  .marq .track span.hl{color:var(--bronze)}
+  @keyframes scrollx{to{transform:translateX(-50%)}}
+
+  footer{padding:3rem 0;color:var(--cream-dim);font-size:.85rem;border-top:1px solid var(--border);text-align:center}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div id="cur"></div>
+
+<div class="hero" id="hero">
+  <div class="layer bg" data-plx="0.25"></div>
+  <div class="layer mid" data-plx="0.5"></div>
+  <div class="content">
+    <span class="eyebrow">Premium Materials · Global Standard</span>
+    <h1><span class="mask m1"><span>TEXX</span></span> <span class="mask m2"><span>Motion</span></span></h1>
+    <p class="sub">parallax · micro-interactions · animation ที่ดูแพง</p>
+  </div>
+  <div class="scrollhint">Scroll<span></span></div>
+</div>
+
+<div class="wrap">
+  <section class="reveal" id="s1">
+    <div class="sec-head"><span class="eyebrow">01 — Parallax</span><h2>Layered depth</h2></div>
+    <div class="plx" id="plx">
+      <div class="p p1" data-plx="0.15"></div>
+      <div class="p p2" data-plx="0.55"></div>
+      <div class="p p3" data-plx="0.85"></div>
+      <div class="cap">DEPTH</div>
+    </div>
+    <p class="note">แต่ละชั้นเลื่อนคนละความเร็ว → เกิดความลึก · เยื้อง 5–20% พอ อย่าเยอะ</p>
+  </section>
+
+  <section id="s2">
+    <div class="sec-head reveal"><span class="eyebrow">02 — Micro-interactions</span><h2>ลองชี้ / โฟกัส / กดดู</h2></div>
+    <div class="grid stagger" id="lab">
+      <div class="demo"><div class="lbl">Button</div><button class="btn btn-p" data-cur>Explore <span class="ar">→</span></button></div>
+      <div class="demo"><div class="lbl">Animated link</div><br><a href="#" class="link" data-cur onclick="return false">Discover materials</a></div>
+      <div class="demo"><div class="lbl">Magnetic</div><div class="mag" id="mag" data-cur>PULL</div></div>
+      <div class="demo"><div class="lbl">Float label</div><div class="field"><input id="fi" placeholder=" "><label for="fi">Your email</label></div></div>
+      <div class="demo"><div class="lbl">Counter</div><div class="counter" data-count="120">0</div><div class="lbl" style="margin:.5rem 0 0">projects</div></div>
+      <div class="demo" style="padding:0"><div class="card"><div class="img"><div></div></div><div class="b"><strong>Hover card</strong><p>ยกขึ้น + ภาพ zoom ช้า</p></div></div></div>
+    </div>
+    <p class="note">เปลี่ยนเฉพาะ transform/opacity · ทุกอย่าง reversible นุ่มพอๆ กับตอนเข้า</p>
+  </section>
+
+  <section class="reveal" id="s3">
+    <div class="sec-head"><span class="eyebrow">03 — Reveal & Stagger</span><h2>เข้า viewport ทีละชั้น</h2></div>
+    <div class="grid stagger">
+      <div class="card"><div class="img"><div></div></div><div class="b"><strong>Natural Stone</strong><p>fade + rise 28px</p></div></div>
+      <div class="card"><div class="img"><div></div></div><div class="b"><strong>Surface Design</strong><p>stagger 100ms</p></div></div>
+      <div class="card"><div class="img"><div></div></div><div class="b"><strong>Global Standard</strong><p>ease-out expo</p></div></div>
+    </div>
+  </section>
+</div>
+
+<div class="marq" id="s4">
+  <div class="track">
+    <span>PREMIUM MATERIALS</span><span class="hl">·</span><span>GLOBAL STANDARD</span><span class="hl">·</span><span>DESIGN FORWARD</span><span class="hl">·</span>
+    <span>PREMIUM MATERIALS</span><span class="hl">·</span><span>GLOBAL STANDARD</span><span class="hl">·</span><span>DESIGN FORWARD</span><span class="hl">·</span>
+  </div>
+</div>
+
+<footer>TEXX Motion Guide · parallax · micro-interactions · ambient · spec: docs/motion.md</footer>
+
+<script>
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // progress + parallax
+  const plx=[...document.querySelectorAll('[data-plx]')];
+  function onScroll(){
+    const h=document.documentElement;
+    document.getElementById('prog').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+    if(reduce)return;
+    const vh=innerHeight;
+    plx.forEach(el=>{
+      const r=el.getBoundingClientRect();
+      const speed=parseFloat(el.dataset.plx);
+      const off=(r.top+r.height/2 - vh/2);
+      el.style.transform='translate3d(0,'+(-off*speed*0.15)+'px,0)';
+    });
+  }
+  addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});onScroll();
+
+  // reveal
+  const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+  document.querySelectorAll('.reveal,.stagger').forEach(el=>io.observe(el));
+  setTimeout(()=>document.getElementById('hero').classList.add('in'),100);
+
+  // counter
+  const cio=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){const el=e.target,t=+el.dataset.count;let n=0;const step=()=>{n+=Math.ceil((t-n)/12);if(n>=t){el.textContent=t;return}el.textContent=n;requestAnimationFrame(step)};step();cio.unobserve(el)}}),{threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+
+  // custom cursor + magnetic
+  if(!reduce && matchMedia('(hover:hover)').matches){
+    const cur=document.getElementById('cur');let cx=0,cy=0,tx=0,ty=0;
+    addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY});
+    (function loop(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;cur.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';requestAnimationFrame(loop)})();
+    document.querySelectorAll('[data-cur]').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.style.width='40px';cur.style.height='40px';cur.style.background='rgba(185,154,107,.35)'});el.addEventListener('mouseleave',()=>{cur.style.width='12px';cur.style.height='12px';cur.style.background='var(--bronze)'})});
+    const mag=document.getElementById('mag');
+    mag.addEventListener('mousemove',e=>{const r=mag.getBoundingClientRect();mag.style.transform='translate('+(e.clientX-r.left-r.width/2)*.3+'px,'+(e.clientY-r.top-r.height/2)*.3+'px)'});
+    mag.addEventListener('mouseleave',()=>mag.style.transform='translate(0,0)');
+  }
+</script>
+</body>
+</html>

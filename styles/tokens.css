@@ -1,0 +1,73 @@
+/* TEXX Design System — design tokens
+ * วางไฟล์นี้ไว้ที่ styles/tokens.css แล้ว import เข้า globals.css
+ * ดูรายละเอียดที่ docs/design-system.md
+ */
+:root {
+  /* ---- Olive (brand / backgrounds) ---- */
+  --texx-olive-950: #1E2016;
+  --texx-olive-900: #26281E;
+  --texx-olive-800: #34372A; /* primary background */
+  --texx-olive-700: #434634;
+  --texx-olive-600: #565A45;
+
+  /* ---- Cream (text / off-white) ---- */
+  --texx-cream:       #EAE8DD; /* primary text */
+  --texx-cream-muted: #A9A99A;
+  --texx-cream-dim:   #7B7C6E;
+  --texx-white:       #F5F4EE;
+
+  /* ---- Bronze (accent) ---- */
+  --texx-bronze:       #B99A6B;
+  --texx-bronze-light: #D0B588;
+  --texx-bronze-dark:  #8C7550;
+
+  /* ---- Semantic ---- */
+  --bg:            var(--texx-olive-800);
+  --bg-deep:       var(--texx-olive-950);
+  --surface:       var(--texx-olive-700);
+  --text:          var(--texx-cream);
+  --text-muted:    var(--texx-cream-muted);
+  --text-dim:      var(--texx-cream-dim);
+  --accent:        var(--texx-bronze);
+  --border:        rgba(234, 232, 221, 0.12);
+  --border-strong: rgba(234, 232, 221, 0.24);
+
+  /* ---- Typography ---- */
+  --font-display: 'Sora', 'Noto Sans Thai', sans-serif;
+  --font-body:    'Inter', 'IBM Plex Sans Thai', sans-serif;
+
+  --fs-display: clamp(2.75rem, 6vw, 5.5rem);
+  --fs-h1:      clamp(2rem, 4vw, 3.5rem);
+  --fs-h2:      clamp(1.6rem, 3vw, 2.5rem);
+  --fs-h3:      1.5rem;
+  --fs-body-lg: 1.125rem;
+  --fs-body:    1rem;
+  --fs-small:   0.875rem;
+  --fs-eyebrow: 0.75rem;
+
+  /* ---- Radius ---- */
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+
+  /* ---- Motion ---- */
+  --dur-fast:   200ms;
+  --dur-base:   400ms;
+  --dur-slow:   700ms;
+  --dur-reveal: 900ms;
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Layout ---- */
+  --content-max: 1280px;
+  --gutter: clamp(1.5rem, 5vw, 6rem);
+  --section-y: clamp(5rem, 12vh, 10rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

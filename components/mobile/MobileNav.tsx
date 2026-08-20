@@ -45,11 +45,13 @@ export default function MobileNav({ active }: { active?: string }) {
           transition: "background 400ms var(--ease-out), border-color 400ms",
         }}
       >
-        <a href="#m-top" style={{ display: "inline-flex", alignItems: "center", height: 44 }}>
+        {/* The source file used #m-top, which only made sense when each page
+            was a standalone .dc.html. On the real site the logo goes home. */}
+        <Link href="/" aria-label="TEXX — home" style={{ display: "inline-flex", alignItems: "center", height: 44 }}>
           <span style={{ display: "block", margin: "-14px 0" }}>
             <TexxLogo height={72} />
           </span>
-        </a>
+        </Link>
         <button
           data-menu-open
           type="button"
@@ -97,9 +99,16 @@ export default function MobileNav({ active }: { active?: string }) {
             height: 44,
           }}
         >
-          <span style={{ display: "block", margin: "-14px 0 -14px -.25rem" }}>
+          {/* The drawer lists the four inner pages but no home row, so the
+              logo is the way back — plain artwork in the source, a link here. */}
+          <Link
+            href="/"
+            data-drawer-link
+            aria-label="TEXX — home"
+            style={{ display: "block", margin: "-14px 0 -14px -.25rem" }}
+          >
             <TexxLogo height={72} />
-          </span>
+          </Link>
           <button
             data-menu-close
             type="button"

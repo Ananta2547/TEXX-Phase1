@@ -47,6 +47,36 @@ a:hover {
   color: var(--texx-bronze-light);
 }
 
+/* ---- Mobile layout tokens (from TEXX Home Mobile.dc.html) ---- */
+:root {
+  --gutter-m: 1.5rem;
+  --section-y-m: 4.5rem;
+}
+
+/* ---- Viewport switch ----
+   Desktop and mobile are separate 1:1 ports of their own Design Composer
+   files, not one responsive tree. Both are server-rendered and CSS decides
+   which one is shown, so there is no device sniffing and no hydration skew. */
+.texx-viewport-desktop {
+  display: block;
+}
+.texx-viewport-mobile {
+  display: none;
+}
+@media (max-width: 860px) {
+  .texx-viewport-desktop {
+    display: none;
+  }
+  .texx-viewport-mobile {
+    display: block;
+  }
+}
+
+/* The collection rail hides its scrollbar; the dots carry the position. */
+[data-rail]::-webkit-scrollbar {
+  display: none;
+}
+
 /* ---- Shared keyframes (ambient / hero) ---- */
 @keyframes texx-marquee {
   from { transform: translateX(0); }

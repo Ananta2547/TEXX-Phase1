@@ -1,0 +1,534 @@
+/* TEXX UI — design tokens + component interaction states.
+ *
+ * Source of truth: styles/tokens.css and app/globals.css in this repo.
+ * Tokens are duplicated here (not @import-ed) so the library is
+ * self-contained: consumers get the whole design system from this one file.
+ */
+
+:root {
+  /* ---- Olive (brand / backgrounds) ---- */
+  --texx-olive-950: #1e2016;
+  --texx-olive-900: #26281e;
+  --texx-olive-800: #34372a; /* primary background */
+  --texx-olive-700: #434634;
+  --texx-olive-600: #565a45;
+
+  /* ---- Cream (text / off-white) ---- */
+  --texx-cream: #eae8dd; /* primary text */
+  --texx-cream-muted: #a9a99a;
+  --texx-cream-dim: #7b7c6e;
+  --texx-white: #f5f4ee;
+
+  /* ---- Bronze (accent) ---- */
+  --texx-bronze: #b99a6b;
+  --texx-bronze-light: #d0b588;
+  --texx-bronze-dark: #8c7550;
+
+  /* ---- Semantic ---- */
+  --bg: var(--texx-olive-800);
+  --bg-deep: var(--texx-olive-950);
+  --surface: var(--texx-olive-700);
+  --text: var(--texx-cream);
+  --text-muted: var(--texx-cream-muted);
+  --text-dim: var(--texx-cream-dim);
+  --accent: var(--texx-bronze);
+  --border: rgba(234, 232, 221, 0.12);
+  --border-strong: rgba(234, 232, 221, 0.24);
+
+  /* ---- Typography ---- */
+  --font-display: "Sora", "Noto Sans Thai", sans-serif;
+  --font-body: "Inter", "IBM Plex Sans Thai", sans-serif;
+
+  --fs-display: clamp(2.75rem, 6vw, 5.5rem);
+  --fs-h1: clamp(2rem, 4vw, 3.5rem);
+  --fs-h2: clamp(1.6rem, 3vw, 2.5rem);
+  --fs-h3: 1.5rem;
+  --fs-body-lg: 1.125rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-eyebrow: 0.75rem;
+
+  /* ---- Radius ---- */
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+
+  /* ---- Motion ---- */
+  --dur-fast: 200ms;
+  --dur-base: 400ms;
+  --dur-slow: 700ms;
+  --dur-reveal: 900ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Layout ---- */
+  --content-max: 1280px;
+  --gutter: clamp(1.5rem, 5vw, 6rem);
+  --section-y: clamp(5rem, 12vh, 10rem);
+}
+
+/* ---- Root wrapper ----
+   TexxRoot renders this. It sets the ground, the body font and the base
+   rhythm so components inherit them instead of restating them. */
+.texx-root {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.texx-root *,
+.texx-root *::before,
+.texx-root *::after {
+  box-sizing: border-box;
+}
+
+/* ---- Section ---- */
+.texx-section {
+  padding: var(--section-y) var(--gutter);
+}
+.texx-section__inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+}
+.texx-section--olive {
+  background: var(--texx-olive-800);
+}
+.texx-section--olive-deep {
+  background: var(--texx-olive-900);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.texx-section--night {
+  background: var(--texx-olive-950);
+}
+.texx-section--light {
+  background: var(--texx-white);
+  color: var(--texx-olive-950);
+}
+
+/* ---- Eyebrow ---- */
+.texx-eyebrow {
+  display: inline-block;
+  font-size: var(--fs-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--texx-bronze);
+}
+.texx-eyebrow--on-light {
+  color: var(--texx-bronze-dark);
+}
+
+/* ---- Heading ---- */
+.texx-heading {
+  font-family: var(--font-display);
+  margin: 0;
+  color: var(--texx-white);
+  text-wrap: balance;
+}
+.texx-heading--on-light {
+  color: var(--texx-olive-950);
+}
+.texx-heading--display {
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.texx-heading--h1 {
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+.texx-heading--h2 {
+  font-size: var(--fs-h2);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.texx-heading--h3 {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+}
+
+/* ---- Button ----
+   The sheen sweep is the CSS port of the site's MagnetFx element, so a
+   button is self-contained here and needs no page-level motion script. */
+.texx-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.95rem 2rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    background var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    transform 120ms var(--ease-out);
+}
+.texx-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(245, 244, 238, 0.28) 50%,
+    transparent 100%
+  );
+  transform: translateX(-120%);
+  transition: transform var(--dur-slow) var(--ease-out);
+  pointer-events: none;
+}
+.texx-btn:hover::before {
+  transform: translateX(120%);
+}
+.texx-btn:active {
+  transform: scale(0.97);
+}
+.texx-btn:focus-visible {
+  outline: 2px solid var(--texx-bronze-light);
+  outline-offset: 3px;
+}
+.texx-btn[disabled],
+.texx-btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.texx-btn__arrow {
+  display: inline-block;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.texx-btn:hover .texx-btn__arrow {
+  transform: translateX(4px);
+}
+
+.texx-btn-primary {
+  background: var(--texx-cream);
+  color: var(--texx-olive-900);
+}
+.texx-btn-primary:hover {
+  background: var(--texx-bronze);
+  color: var(--texx-white);
+}
+
+.texx-btn-secondary {
+  background: transparent;
+  color: var(--texx-cream);
+  border: 1px solid rgba(234, 232, 221, 0.34);
+  padding: 0.95rem 1.9rem;
+}
+.texx-btn-secondary:hover {
+  background: var(--texx-olive-700);
+  border-color: var(--texx-bronze);
+}
+
+.texx-btn-dark {
+  background: var(--texx-olive-900);
+  color: var(--texx-white);
+}
+.texx-btn-dark:hover {
+  background: var(--texx-bronze);
+  color: var(--texx-white);
+}
+
+/* ---- Nav button (carousel arrows) ---- */
+.texx-navbtn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: var(--texx-cream);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out);
+}
+.texx-navbtn:hover {
+  background: var(--texx-bronze);
+  border-color: var(--texx-bronze);
+  color: var(--texx-olive-900);
+}
+.texx-navbtn:focus-visible {
+  outline: 2px solid var(--texx-bronze-light);
+  outline-offset: 3px;
+}
+/* At the first or last slide the arrow must read as unavailable, not merely
+   inert — otherwise a carousel gives no sign it has run out of track. */
+.texx-navbtn:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+.texx-navbtn:disabled:hover {
+  background: transparent;
+  border-color: var(--border-strong);
+  color: var(--texx-cream);
+}
+
+/* ---- Text link with animated underline ---- */
+.texx-link {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--texx-cream);
+  text-decoration: none;
+  padding-bottom: 4px;
+}
+.texx-link--on-light {
+  color: var(--texx-olive-900);
+}
+.texx-link__underline {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.5px;
+  background: var(--texx-bronze);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+.texx-link--on-light .texx-link__underline {
+  background: var(--texx-bronze-dark);
+}
+.texx-link:hover .texx-link__underline,
+.texx-link:focus-visible .texx-link__underline {
+  transform: scaleX(1);
+}
+
+/* ---- Card ---- */
+.texx-card {
+  display: block;
+  background: var(--texx-olive-700);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform var(--dur-slow) var(--ease-out),
+    box-shadow var(--dur-slow) var(--ease-out);
+}
+.texx-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 28px 55px -24px rgba(0, 0, 0, 0.6);
+}
+.texx-card__media {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+.texx-card__image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+.texx-card:hover .texx-card__image {
+  transform: scale(1.06);
+}
+/* Warm bronze wash — keeps every material photo inside the brand's tone. */
+.texx-card__wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 100% at 30% 20%,
+    rgba(185, 154, 107, 0.2),
+    transparent 60%
+  );
+}
+.texx-card__body {
+  padding: 1.4rem 1.5rem 1.6rem;
+}
+.texx-card__tag {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--texx-bronze);
+  margin-bottom: 0.6rem;
+}
+.texx-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--texx-white);
+  margin: 0;
+}
+.texx-card__desc {
+  color: var(--texx-cream-muted);
+  font-size: 0.95rem;
+  margin: 0.6rem 0 0;
+}
+
+/* ---- Stat ---- */
+.texx-stat__value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.15rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+  letter-spacing: -0.02em;
+  color: var(--texx-olive-950);
+  font-variant-numeric: tabular-nums;
+}
+.texx-stat--on-dark .texx-stat__value {
+  color: var(--texx-white);
+}
+.texx-stat__suffix {
+  color: var(--texx-bronze);
+}
+.texx-stat__rule {
+  width: 40px;
+  height: 1px;
+  background: var(--texx-bronze);
+  margin: 1rem 0;
+}
+.texx-stat__label {
+  color: var(--texx-olive-600);
+  font-size: 0.95rem;
+  margin: 0;
+  max-width: 26ch;
+}
+.texx-stat--on-dark .texx-stat__label {
+  color: var(--texx-cream-muted);
+}
+
+/* ---- Service tile ---- */
+.texx-service {
+  background: var(--texx-olive-900);
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: background 500ms var(--ease-out);
+}
+.texx-service:hover {
+  background: #2e3124;
+}
+.texx-service__no {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--texx-bronze);
+}
+.texx-service__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--texx-white);
+  margin: 0;
+}
+.texx-service__desc {
+  color: var(--texx-cream-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ---- Field ---- */
+.texx-fieldgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.texx-fieldgroup__label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--texx-cream-muted);
+}
+.texx-field {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: 0;
+  color: var(--texx-white);
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.6rem 0;
+  outline: none;
+  transition: border-color 300ms var(--ease-out);
+}
+.texx-field:focus {
+  border-bottom-color: var(--texx-bronze);
+}
+.texx-field::placeholder {
+  color: var(--texx-cream-dim);
+}
+select.texx-field {
+  background: var(--texx-olive-900);
+}
+textarea.texx-field {
+  resize: vertical;
+}
+
+/* ---- Marquee ---- */
+@keyframes texx-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.texx-marquee {
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 0;
+  background: var(--texx-olive-950);
+}
+.texx-marquee__track {
+  display: flex;
+  gap: 3rem;
+  width: max-content;
+  animation: texx-marquee var(--texx-marquee-duration, 28s) linear infinite;
+}
+.texx-marquee:hover .texx-marquee__track {
+  animation-play-state: paused;
+}
+.texx-marquee__item {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.125rem;
+  letter-spacing: 0.06em;
+  color: var(--texx-cream-muted);
+  white-space: nowrap;
+}
+
+/* ---- Iron rule: honour reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .texx-root *,
+  .texx-root *::before,
+  .texx-root *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

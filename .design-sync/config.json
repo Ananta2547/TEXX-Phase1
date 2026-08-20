@@ -1,0 +1,15 @@
+{
+  "pkg": "@texx/ui",
+  "globalName": "TexxUI",
+  "shape": "package",
+  "projectId": "bb4d7813-6f5c-4923-881e-f8f134ba59a8",
+  "buildCmd": "npm run build --prefix packages/texx-ui",
+  "srcDir": "src",
+  "tsconfig": "tsconfig.json",
+  "cssEntry": "dist/texx-ui.css",
+  "extraFonts": ["fonts/fonts.css"],
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "Heading": { "cardMode": "column" }
+  }
+}
